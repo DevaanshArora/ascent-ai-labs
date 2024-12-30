@@ -1,0 +1,15 @@
+{
+    "chroma_db": {
+        "url": "http://your-chroma-db-server:port",
+        "collection_name": "my_collection"
+    },
+    "ollama": {
+        "base_url": "http://localhost:11434",
+        "model": "mistral",
+        "embeddings_model": "nomic-embed-text"
+    },
+    "openAI":{
+         "api_key": "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",
+         "model":"gpt-4o-mini"
+    }
+}

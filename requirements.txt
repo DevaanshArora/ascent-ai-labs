@@ -1,0 +1,11 @@
+fastapi
+pydantic
+python-multipart
+langchain-core
+langchain-text-splitters
+pypdf
+uvicorn
+langchain
+langchain-community
+langchain-ollama
+PyPDF2
