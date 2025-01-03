@@ -1,0 +1,196 @@
+.policy-container {
+    display: flex;
+    font-family: Arial, sans-serif;
+  }
+  
+  .sidebar {
+    width: 250px;
+    background-color:white;
+    padding: 20px;
+    height: 100px;
+  }
+  
+  .sidebar-menu {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sidebar-menu li {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    color: #1d3557;
+    font-size: 20px;
+    cursor: pointer;
+    
+  }
+  .sidebar-menu li i {
+    margin-right: 10px;
+    font-size: 18px;
+    color: #1d3557;
+  }
+  .sidebar-menu li:hover {
+    background-color: #f0f0f0;
+    border-radius: 5px;
+  }
+  
+.content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+  }
+
+.content-header h1{
+    font-size: 1.5em;
+    color: #1d3557;
+  }
+  
+
+/* General Button Styles */
+.btn {
+    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-weight: bold;
+    
+  }
+
+  /* Cancel Button */
+.btn.cancel-btn {
+    background-color: #fff;
+    color: #000;
+    border: 1px solid #d1d5db; /* Light gray border */
+    transition: all 0.3s ease;
+    margin-right: 10px;
+  }
+  
+.btn.cancel-btn:hover {
+    background-color: #f5f5f5; /* Slight hover effect */
+  }
+
+/* Save Button */
+.btn.save-btn {
+    background-color: #1d3557; /* Dark blue background */
+    color: #fff;
+    border: none;
+    transition: all 0.3s ease;
+  }
+  
+.btn.save-btn:hover {
+    background-color: #16324f; /* Slightly darker blue on hover */
+  }
+
+.tabs {
+    margin-top: 150px;
+    border: 1px solid white;
+    border-radius: 10px;
+    
+
+  }
+  
+.tab {
+    padding: 10px 20px;
+    border: none;
+    background-color: #e0e0e0;
+    cursor: pointer;
+    width: 320px; /* Set a fixed width for each tab */ 
+    text-align: center; /* Center the text inside the tab */
+  }
+  
+.tab.active {
+    background-color: #1d3557;
+    color: #fff;
+    
+  }
+  
+.editor {
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 10px;
+  }
+  
+.editor-toolbar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+.editor-toolbar .btn { 
+    padding: 5px 10px; border: 1px solid #ccc; /* Separate border for each button */ 
+    background-color:white; 
+    font-size: 1.2rem;
+    color: #1d3557;
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
+}
+
+.editor-toolbar .btn:hover{
+    background-color: #e0e0e0;
+}
+hr {
+    border: none; 
+    border-top: 1px solid #ccc;
+    margin:0; 
+    }  
+
+textarea {
+    width: 99%; 
+    height: 150px; 
+    padding: 10px;
+    outline: none;
+    resize: none;
+  }
+
+
+  
+.editor-actions {
+    display: flex;
+    flex-direction: column; /* Arrange buttons in a column */
+    align-items: flex-end; /* Align items to the right */
+    gap: 10px;
+    margin-right: 25px;
+    margin-top: 20px;
+}
+
+.editor-actions .top-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.editor-actions .btn {
+    background-color: #1d3557;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.editor-actions .btn:hover {
+    background-color: #16324f; /* Slightly darker blue on hover */
+}
+
+
+.footer {
+    display: flex;
+    justify-content: flex-end; /* Align items to the right */
+    margin-top: 20px;
+}
+
+.footer .btn {
+    margin-right: 10px; /* Add space between button and select */
+    background-color: #1d3557;
+    color: #fff;
+    
+}

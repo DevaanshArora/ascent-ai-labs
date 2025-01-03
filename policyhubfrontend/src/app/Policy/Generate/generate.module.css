@@ -1,0 +1,134 @@
+.body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  height: 100vh; /* Full viewport height */
+  background-color: white;
+}
+
+.button {
+  position: fixed; /* Stays in the top-right */
+  top: 10px; /* Adjust as needed */
+  right: 10px; /* Adjust as needed */
+  z-index: 1000; /* Above other elements */
+}
+
+.container {
+  position: fixed; /* Centers the container */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  height: 90%;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  z-index: 1001; /* Above the overlay */
+  overflow: hidden;
+}
+
+.overlay {
+  position: fixed; /* Covers the entire screen */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+  backdrop-filter: blur(5px); /* Blurs the background */
+  z-index: 999; /* Below the container but above the rest */
+}
+
+.x {
+  position: absolute; /* Absolute positioning relative to the container */
+  top: 15px; /* Adjust as needed */
+  right: 15px; /* Adjust as needed */
+  width: auto; /* Ensures no unwanted stretching */
+  height: 15px;
+  cursor: pointer; /* Optional: Add a pointer cursor for better UX */
+  margin-bottom: 20px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  margin: 35px;
+}
+
+.inside {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  margin-bottom: 25px;
+  gap: 7px;
+}
+
+.insideone{
+  display: flex;
+  flex: 1;
+  gap: 3px;
+  flex-direction: column;
+}
+
+.insidetwo {
+  display: flex;
+  flex: 1;
+  gap: 3px;
+  flex-direction: column;
+}
+
+.generate_button {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  background-color: navy;
+  border-radius: 8px;
+  height: 40px;
+  color: white;
+}
+
+.input_style {
+  border: 1px solid #ccc; /* Light gray border */
+  border-radius: 4px; /* Rounded corners */
+  height: 37px; /* Fixed height */
+  padding: 0 10px; /* Add some padding for text */
+  font-size: 14px; /* Optional: Adjust font size */
+  outline: none; /* Remove blue border on focus */
+  box-sizing: border-box; /* Ensure padding doesn't affect total width */
+  width: 100%; /* Optional: Full width */
+  transition: border-color 0.3s ease; /* Smooth transition for focus state */
+  font-size: 16px;
+}
+
+/* .input_style:focus {
+  border-color: #007bff;  Change border color on focus 
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);  Optional: Add focus shadow 
+} */
+
+.text_area {
+  border: 1px solid #ccc; /* Light gray border */
+  border-radius: 4px; /* Rounded corners */
+  height: 60px; /* Fixed height */
+  padding: 5px 10px; /* Add some padding for text */
+  font-size: 14px; /* Optional: Adjust font size */
+  outline: none; /* Remove blue border on focus */
+  box-sizing: border-box; /* Ensure padding doesn't affect total width */
+  width: 100%; /* Optional: Full width */
+  transition: border-color 0.3s ease; /* Smooth transition for focus state */
+  font-size: 16px;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  top: 50%;
+  left: 50%;
+  height: 60px;
+  width: 60px;
+  z-index: 9999;  /* Ensure it's the top-most element */
+  position: absolute;  /* Positioning to overlay above the container */
+}
