@@ -1,14 +1,10 @@
+# app/schemas.py
+
 from pydantic import BaseModel
 
-class ItemBase(BaseModel):
-    name: str
-    description: str
+class PolicyRequest(BaseModel):
+    input_text: str
 
-class ItemCreate(ItemBase):
-    pass
-
-class Item(ItemBase):
+class PolicyResponse(BaseModel):
+    policy_text: str
     id: int
-
-    class Config:
-        orm_mode = True
