@@ -2,7 +2,7 @@
 
 import openai
 
-def generate_policy(input_text, model="gpt-3.5-turbo", api_key="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"):
+def generate_policy(input_text, model="gpt-3.5-turbo", api_key="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"):
     """
     Connects to OpenAI's API to generate a policy based on the given input text.
     """

@@ -15,6 +15,25 @@ interface OptionType {
   label: string;
 }
 
+const formatPolicyData = (data: any, indentLevel: number = 0): string => {
+  let formattedText = '';
+  const indent = '  '.repeat(indentLevel);
+
+  for (const key in data) {
+    if (typeof data[key] === 'object' && !Array.isArray(data[key])) {
+      formattedText += `\n\n${indent}${key}:\n${formatPolicyData(data[key], indentLevel + 1)}`;
+    } else if (Array.isArray(data[key])) {
+      formattedText += `\n\n${indent}${key}:\n${data[key].map((item: any) => `${indent}- ${item}`).join('\n')}`;
+    } else {
+      formattedText += `\n\n${indent}${key}: ${data[key]}`;
+    }
+  }
+
+  return formattedText;
+};
+
+
+
 type SelectOption = { value: string; label: string } | null;
 
 const orgCategories: OptionType[] = [
@@ -74,6 +93,9 @@ const PolicyComponent = () => {
   const handleChange = (key: string) => (value: SingleValue<OptionType> | string) => {
     setFormData(prev => ({ ...prev, [key]: value }));
   };
+  const handleChangeone = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setPolicyText(e.target.value);
+  };
 
   const renderPolicy = () => {
     try {
@@ -127,7 +149,9 @@ const PolicyComponent = () => {
         console.log('Policy generated:', response.data);
         // const returned = renderPolicy(response.data)
         // const staticMarkup = ReactDOMServer.renderToStaticMarkup(returned);
-        setPolicyText(JSON.stringify(response.data, null, 2)); // Pretty print JSON
+        // setPolicyText(JSON.stringify(response.data, null, 2)); // Pretty print JSON
+        const formattedData = formatPolicyData(response.data);
+        setPolicyText(formattedData);
         // setPolicyText(staticMarkup);
 
     } catch (error) {
@@ -183,10 +207,11 @@ const PolicyComponent = () => {
             <button className="btn">H2</button>
           </div>
           <hr />
-          <textarea 
-            placeholder="Add some text"
-            value={policyText} // Bind the policyText state to the textarea
-            onChange={(e) => <div className=""><p>hello how are</p></div>}
+          <textarea
+            value={policyText}
+            onChange={handleChangeone}
+            rows={20}
+            style={{ width: '100%', height:'500px' }} // Monospace font for alignment
           ></textarea>
         </div>
 
@@ -314,9 +339,9 @@ const PolicyComponent = () => {
             </div>
           </>
         )}
-        {policyText && <div  style={{ display:'flex',flexDirection:'column', overflowY:'scroll',height:'50%'}}>
+        {/* {policyText && <div  style={{ display:'flex',flexDirection:'column', overflowY:'scroll',height:'50%'}}>
           {policyText ? renderPolicy() : ''}
-        </div>}
+        </div>} */}
       </div>
     </div>
   );
