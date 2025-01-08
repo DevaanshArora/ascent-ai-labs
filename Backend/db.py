@@ -8,7 +8,7 @@ DB_CONFIG = {
     "host": "localhost",
     "database": "postgres",
     "user": "postgres",
-    "password": "Post@0099",
+    "password": "root",
     "port": "5432"
 }
 # Context manager for managing the database connection

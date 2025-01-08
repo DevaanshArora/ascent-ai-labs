@@ -194,3 +194,10 @@ textarea {
     color: #fff;
     
 }
+
+.policy {
+  display: flex;
+  
+  height: 500px;
+  overflow-y: scroll;
+}

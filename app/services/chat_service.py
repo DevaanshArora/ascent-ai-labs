@@ -20,6 +20,7 @@ class ChatService:
                     "organizational policy in JSON format. The output must be comprehensive, practical, and ready to use, "
                     "Ensure the JSON format is flat, and do not wrap the content under a "
                     "single parent key such as 'Policy'. Each section should stand alone as a top-level key.Please take reference from the input fields entered by the user, The policy should be around 1200 words."
+                    
                 ))
             ]
 
