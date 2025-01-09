@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import "./PolicyComponent.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -73,6 +73,7 @@ const PolicyComponent = () => {
     const [policyText, setPolicyText] = useState('');
     const [showPopup, setShowPopup] = useState(false);
     const [policyName, setPolicyName] = useState('');
+    const popupRef = useRef(null);
     const [formData, setFormData] = useState<{
       organisationName: string;
       additionalInfo: string;
@@ -115,6 +116,18 @@ const PolicyComponent = () => {
     { setShowPopup(true); };
 
 
+  const handleClickOutside = (event) => { 
+    if (popupRef.current && !popupRef.current.contains(event.target)) { 
+      setShowPopup(false);
+     } };
+  
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  },[])
+
   const handleSaveClick = async () => { 
     try { const response = await fetch('http://127.0.0.1:8000/generate-policy/', {
     method: 'POST', 
@@ -131,6 +144,8 @@ const PolicyComponent = () => {
 
             } } catch (error) {
                console.error('Error generating policy:', error); } };
+
+    
   
 
   const handleClose = () => {
@@ -246,15 +261,17 @@ const PolicyComponent = () => {
           <button className="btn next-btn" onClick={handleNextClick}>Next</button>
         </div>
         {showPopup && (
-          <div className="popup">
+          <div className="popup" ref={popupRef}>
             <label>
             Policy Name:
             <input
-              type="text"
+              type=" text"
               value={policyName}
               onChange={(e) => setPolicyName(e.target.value)}
               />
             </label>
+            <br></br>
+            <br></br>
               <button className="btn save-btn" onClick={handleSaveClick}>Save</button>
           </div>
         )}
