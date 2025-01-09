@@ -72,6 +72,9 @@ from pydantic import BaseModel
 class Policy(BaseModel):
     policy_name: str
     policy_data: str
+    category: str
+    department: str
+    policyowner: str
 
 @app.post("/store-policy/")
 async def store_policy_in_db(policy: Policy) -> dict:
