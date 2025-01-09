@@ -1,6 +1,6 @@
 import openai
 
-def generate_policy(input_text, model="gpt-3.5-turbo", api_key="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"):
+def generate_policy(input_text, model="gpt-3.5-turbo", api_key="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"):
     """
     Connects to OpenAI's API to generate a policy based on the given input text.
     """

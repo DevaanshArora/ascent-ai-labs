@@ -4,12 +4,13 @@ import psycopg2
 from psycopg2 import sql
 from contextlib import contextmanager
 
+
 DB_CONFIG = {
-    "host": "localhost",
-    "database": "postgres",
-    "user": "postgres",
-    "password": "Post@0099",
-    "port": "5432"
+    "host": "grc-rdbms-sql.ascentbusiness.com",       
+    "database": "postgres",  
+    "user": "grc_dev_db_user",      
+    "password": "ISTinEouTEGF",  
+    "port": "5432"               
 }
 
 # Context manager for managing the database connection
@@ -22,18 +23,19 @@ def get_db_connection():
         conn.close()
 
 # Function to insert policy data into PostgreSQL
-def insert_policy_data(policy_data):
-    query = sql.SQL("INSERT INTO policies (policy_text) VALUES (%s) RETURNING id;")
+def insert_policy_data(policy_data: str, policy_name: str):
+    query = sql.SQL("INSERT INTO policies_gtpl (policy_text, policy_name) VALUES (%s, %s) RETURNING id;")
     with get_db_connection() as conn:
         with conn.cursor() as cursor:
-            cursor.execute(query, (policy_data,))
+            cursor.execute(query, (policy_data, policy_name))
             conn.commit()
             policy_id = cursor.fetchone()[0]
             return policy_id
 
+
 # Function to fetch all policies
 def get_all_policies():
-    query = "SELECT * FROM policies;"
+    query = "SELECT * FROM policies_gtpl;"
     with get_db_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query)
@@ -41,7 +43,7 @@ def get_all_policies():
             return rows
 
 def get_policy_by_name(policy_name: str):
-    query = sql.SQL("SELECT * FROM policies WHERE policy_name = %s;")
+    query = sql.SQL("SELECT * FROM policies_gtpl WHERE policy_name = %s;")
     with get_db_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query, (policy_name,))
@@ -49,7 +51,7 @@ def get_policy_by_name(policy_name: str):
             return rows
         
 def get_all_Policy_name():
-    query = "Select policy_name from Policies;"
+    query = "Select policy_name from policies_gtpl;"
     with get_db_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query)

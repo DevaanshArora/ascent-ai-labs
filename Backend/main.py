@@ -67,23 +67,28 @@ async def generate_and_store_policy(request: PolicyRequest):
     # policy_id = insert_policy_data(policy)
 
     # return PolicyResponse(policy_text=policy, id=policy_id)
+from pydantic import BaseModel
+
+class Policy(BaseModel):
+    policy_name: str
+    policy_data: str
 
 @app.post("/store-policy/")
-async def store_policy_in_db(policy_data: str, policy_name: str) -> dict:
+async def store_policy_in_db(policy: Policy) -> dict:
     """
     Store the policy in the database.
     Args:
-        policy_data: The policy text to be stored.
-        policy_name: The name of the policy.
+        policy: A Pydantic model containing policy_name and policy_data.
     Returns:
         A dictionary with the policy ID or error details.
     """
     try:
-        # Assuming async database interaction
-        policy_id = await insert_policy_data(policy_data, policy_name)
+        # Access policy_name and policy_data from the Pydantic model
+        policy_id = insert_policy_data(policy.policy_data, policy.policy_name)
         return {"policy_id": policy_id, "message": "Policy stored successfully."}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 
 @app.get("/policies/")
