@@ -73,6 +73,9 @@ const PolicyComponent = () => {
     const [policyText, setPolicyText] = useState('');
     const [showPopup, setShowPopup] = useState(false);
     const [policyName, setPolicyName] = useState('');
+    const [policyOwner, setPolicyOwner] = useState('');
+    const [categories, setCategories] = useState('');
+    const [department, setDepartment] = useState('');
     const popupRef = useRef(null);
     const [formData, setFormData] = useState<{
       organisationName: string;
@@ -116,11 +119,8 @@ const PolicyComponent = () => {
     { setShowPopup(true); };
 
 
-<<<<<<< HEAD
-  const handleClickOutside = (event: { target: any; }) => { 
-=======
   const handleClickOutside = (event) => { 
->>>>>>> 1169cf507ac6d7c4fffb145dc0d2a3cf1fb7e81b
+ 
     if (popupRef.current && !popupRef.current.contains(event.target)) { 
       setShowPopup(false);
      } };
@@ -138,7 +138,7 @@ const PolicyComponent = () => {
     headers: {
        'Content-Type': 'application/json', }, 
        body: JSON.stringify({ "policy_name":policyName,
-        "policy_data":policyText
+        "policy_data":policyText,"policyowner":policyOwner,"category":categories,"department ":department
         }), });
         if (response.ok) { 
           const data = await response.json();
@@ -152,7 +152,6 @@ const PolicyComponent = () => {
                console.error('Error generating policy:', error); } };
 
     
-  
 
   const handleClose = () => {
     setButtonClicked(false);
@@ -277,7 +276,35 @@ const PolicyComponent = () => {
               />
             </label>
             <br></br>
+            <label>
+            Policy Owner:
+            <input
+            type="text"
+            value={policyOwner}
+            onChange={(e) => setPolicyOwner(e.target.value)}
+            />
             <br></br>
+            </label>
+            <label>
+            Policy Categories:
+            <input
+            type="text"
+            value={categories}
+            onChange={(e) => setCategories(e.target.value)}
+            />
+            <br></br>
+            </label>
+            <label>
+            Policy Department:
+            <input
+            type="text"
+            value={department}
+            onChange={(e) => setDepartment(e.target.value)}
+            />
+            <br></br>
+            </label>
+            
+
               <button className="btn save-btn" onClick={handleSaveClick}>Save</button>
           </div>
         )}
