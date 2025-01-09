@@ -62,3 +62,12 @@ def get_all_Policy_name():
             cursor.execute(query)
             rows = cursor.fetchall()
             return rows
+
+
+def get_policy_details():
+    query = "SELECT * FROM public.policies_gtpl ORDER BY id ASC ;"
+    with get_db_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(query)
+            rows = cursor.fetchall()
+            return rows

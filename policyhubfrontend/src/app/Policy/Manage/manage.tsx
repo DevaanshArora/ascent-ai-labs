@@ -1,7 +1,8 @@
 
 
 'use client';
-import { useRouter } from 'next/navigation';import { useState } from 'react';
+import { useRouter} from 'next/navigation';
+import { useState, useEffect } from 'react';
 import SettingsIcon from '@mui/icons-material/Settings';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import styles from './manage.module.css';
@@ -28,45 +29,91 @@ import { BiChevronsLeft } from "react-icons/bi";
 import { BiChevronsRight } from "react-icons/bi";
 import { BiChevronLeft } from "react-icons/bi";
 import { BiChevronRight } from "react-icons/bi";
+import axios from 'axios';
+
+interface Policy {
+  id: number;
+  description: string;
+  name: string;
+  category: string;
+  department: string;
+  owner: string;
+}
+
 
 
 const Manag: React.FC = () => {
   const router = useRouter();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [sortField, setSortField] = useState<string | null>(null);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [policies, setPolicies] = useState<Policy[]>([]);
+  const [sortedData, setSortedData] = useState<Policy[]>([]);
+  const [searchValue, setSearchValue] = useState('');
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleSort = (field: string) => {
-    setSortField(field);
-    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+  useEffect(() => {
+    const fetchPolicies = async () => {
+      try {
+        const response = await axios.get("http://127.0.0.1:8000/policies/details/");
+        const mappedData = response.data.map((policy: any[]) => ({
+          id: policy[0],
+          description: policy[1],
+          name: policy[2],
+          category: policy[3],
+          department: policy[4],
+          owner: policy[5],
+        }));
+        setPolicies(mappedData);
+        setSortedData(mappedData);
+      } catch (error) {
+        console.error("Error fetching policies:", error);
+      }
+    };
+    fetchPolicies();
+  }, []);
+
+  const handleSort = (column: keyof Policy) => {
+    const sorted = [...sortedData].sort((a, b) => {
+      if (a[column] < b[column]) return -1;
+      if (a[column] > b[column]) return 1;
+      return 0;
+    });
+    setSortedData(sorted);
   };
 
-  const data = [
-    { id: 'ORG_IND_HR_v.0.1', name: 'Information Security Policy', version: '0.1', category: 'Organizational', department: 'Edward', owner: 'Ritibha', status: 'Approved' },
-    { id: 'ORG_IND_HR_v.0.1', name: 'Flexibility Policy', version: '0.2', category: 'Compliance', department: 'HR', owner: 'Sajid', status: 'Approved' },
-    { id: 'ORG_IND_HR_v.0.2', name: 'IT Security and Data', version: '0.1', category: 'Corporate', department: 'HR', owner: 'Sashi', status: 'Reject' },
-    { id: 'ORG_IND_HR_v.0.2', name: 'Protection Policy', version: '0.1', category: 'Compliance', department: 'HR', owner: 'Ritibha', status: 'Draft' },
-    { id: 'ORG_IND_HR_v.0.1', name: 'Information Security Policy', version: '0.1', category: 'Organizational', department: 'Edward', owner: 'Ritibha', status: 'Approved' },
-    { id: 'ORG_IND_HR_v.0.1', name: 'Flexibility Policy', version: '0.2', category: 'Compliance', department: 'HR', owner: 'Sajid', status: 'Approved' },
-    { id: 'ORG_IND_HR_v.0.2', name: 'IT Security and Data', version: '0.1', category: 'Corporate', department: 'HR', owner: 'Sashi', status: 'Reject' },
-    { id: 'ORG_IND_HR_v.0.2', name: 'Protection Policy', version: '0.1', category: 'Compliance', department: 'HR', owner: 'Ritibha', status: 'Draft' },
-  ];
+  const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value.toLowerCase();
+    setSearchValue(value);
+    const filtered = policies.filter((policy) =>
+      policy.name.toLowerCase().includes(value)
+    );
+    setSortedData(filtered);
+  };
 
-  const sortedData = [...data].sort((a, b) => {
-    if (sortField) {
-      const aValue = a[sortField as keyof typeof a];
-      const bValue = b[sortField as keyof typeof b];
+  // const data = [
+  //   { id: 'ORG_IND_HR_v.0.1', name: 'Information Security Policy', version: '0.1', category: 'Organizational', department: 'Edward', owner: 'Ritibha', status: 'Approved' },
+  //   { id: 'ORG_IND_HR_v.0.1', name: 'Flexibility Policy', version: '0.2', category: 'Compliance', department: 'HR', owner: 'Sajid', status: 'Approved' },
+  //   { id: 'ORG_IND_HR_v.0.2', name: 'IT Security and Data', version: '0.1', category: 'Corporate', department: 'HR', owner: 'Sashi', status: 'Reject' },
+  //   { id: 'ORG_IND_HR_v.0.2', name: 'Protection Policy', version: '0.1', category: 'Compliance', department: 'HR', owner: 'Ritibha', status: 'Draft' },
+  //   { id: 'ORG_IND_HR_v.0.1', name: 'Information Security Policy', version: '0.1', category: 'Organizational', department: 'Edward', owner: 'Ritibha', status: 'Approved' },
+  //   { id: 'ORG_IND_HR_v.0.1', name: 'Flexibility Policy', version: '0.2', category: 'Compliance', department: 'HR', owner: 'Sajid', status: 'Approved' },
+  //   { id: 'ORG_IND_HR_v.0.2', name: 'IT Security and Data', version: '0.1', category: 'Corporate', department: 'HR', owner: 'Sashi', status: 'Reject' },
+  //   { id: 'ORG_IND_HR_v.0.2', name: 'Protection Policy', version: '0.1', category: 'Compliance', department: 'HR', owner: 'Ritibha', status: 'Draft' },
+  // ];
 
-      if (aValue < bValue) return sortOrder === 'asc' ? -1 : 1;
-      if (aValue > bValue) return sortOrder === 'asc' ? 1 : -1;
-    }
-    return 0;
-  });
+  // const sortedData = [...data].sort((a, b) => {
+  //   if (sortField) {
+  //     const aValue = a[sortField as keyof typeof a];
+  //     const bValue = b[sortField as keyof typeof b];
+
+  //     if (aValue < bValue) return sortOrder === 'asc' ? -1 : 1;
+  //     if (aValue > bValue) return sortOrder === 'asc' ? 1 : -1;
+  //   }
+  //   return 0;
+  // });
   
   const handleNewbutton = () => {
     router.push('./Policy/PolicyComponent');
@@ -222,7 +269,7 @@ const Manag: React.FC = () => {
               <div className={styles.searchparentnode} >
                 <div className={styles.searchinput}>
                     <i className={styles.searchicon}><IoIosSearch/></i>
-                    <div><input className={styles.searchlabel} type="text" placeholder="Search" /></div>
+                    <div><input className={styles.searchlabel} type="text" placeholder="Search" value={searchValue} onChange={handleSearch} /></div>
                 </div>
               </div>
               <div className={styles.searchthreeline}>
@@ -236,31 +283,39 @@ const Manag: React.FC = () => {
 
 
           <div className={styles.policytable}>
-            <TableContainer component={Paper} style={{borderRadius: "8px", height: "100%", scrollbarWidth: "thin",overflowY: "auto",  }}>
+            <TableContainer component={Paper} style={{ borderRadius: '8px', height: '100%', overflowY: 'auto' }}>
               <Table>
                 <TableHead>
-                  <TableRow style={{ backgroundColor: "#f4f4f4" }}>
+                  <TableRow style={{ backgroundColor: '#f4f4f4' }}>
                     <TableCell padding="checkbox">
                       <Checkbox size="small" />
-                    </TableCell >
-                    {["Policy ID", "Policy Name", "Version", "Category", "Department", "Policy Owner", "Status"].map(
-                      (header) => (
-                        <TableCell
-                          key={header}
-                          style={{ fontWeight: 600, whiteSpace: "nowrap", textAlign: "left" }}
+                    </TableCell>
+                    {['Policy ID', 'Policy Name', 'Category', 'Department', 'Policy Owner'].map((header, index) => (
+                      <TableCell
+                        key={index}
+                        style={{ fontWeight: 600, whiteSpace: 'nowrap', textAlign: 'left' }}
+                      >
+                        <div
+                          style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
                         >
-                          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", backgroundColor: "#f4f4f4" }}>
-                            <span>{header}</span>
-                            <div>
-                              <IconButton size="small" style={{ padding: "0", margin: "0" }} onClick={() => handleSort(header.toLowerCase().replace(/\s+/g, ""))}>
-                                <ArrowUpward fontSize="small" />
-                                <ArrowDownward fontSize="small" />
-                              </IconButton>
-                            </div>
+                          <span>{header}</span>
+                          <div>
+                            <IconButton
+                              size="small"
+                              style={{ padding: '0', margin: '0' }}
+                              onClick={() =>
+                                handleSort(
+                                  header.toLowerCase().replace(/\s+/g, '') as keyof Policy
+                                )
+                              }
+                            >
+                              <ArrowUpward fontSize="small" />
+                              <ArrowDownward fontSize="small" />
+                            </IconButton>
                           </div>
-                        </TableCell>
-                      )
-                    )}
+                        </div>
+                      </TableCell>
+                    ))}
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -271,18 +326,15 @@ const Manag: React.FC = () => {
                       </TableCell>
                       <TableCell>{row.id}</TableCell>
                       <TableCell>{row.name}</TableCell>
-                      <TableCell>{row.version}</TableCell>
                       <TableCell>{row.category}</TableCell>
                       <TableCell>{row.department}</TableCell>
                       <TableCell>{row.owner}</TableCell>
-                      <TableCell>{row.status}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </TableContainer>
           </div>
-
           <div className={styles.arrowbuttionfolder}>
             <div className={styles.arrowsbutton}>
               <button className={styles.twoarrowbutton}><BiChevronsLeft/></button>

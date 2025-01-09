@@ -2,7 +2,7 @@
 
 from fastapi import FastAPI, HTTPException, Response
 from pydantic import BaseModel
-from db import insert_policy_data, get_all_policies,get_policy_by_name,get_all_Policy_name
+from db import insert_policy_data, get_all_policies,get_policy_by_name,get_all_Policy_name,get_policy_details
 from openai_helper import generate_policy
 from fastapi.middleware.cors import CORSMiddleware
 import json
@@ -114,6 +114,13 @@ async def search_policies(request: PolicySearchRequest):
         raise HTTPException(status_code=404, detail="Policy not found")
     return policies
 
+
+
+@app.get("/policies/details/")
+async def get_policydetails():
+    policies1 = get_policy_details()
+    print(policies1)
+    return policies1
 
 # # app/main.py
 
