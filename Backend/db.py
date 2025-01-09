@@ -8,9 +8,10 @@ DB_CONFIG = {
     "host": "localhost",
     "database": "postgres",
     "user": "postgres",
-    "password": "root",
+    "password": "Post@0099",
     "port": "5432"
 }
+
 # Context manager for managing the database connection
 @contextmanager
 def get_db_connection():
@@ -33,6 +34,22 @@ def insert_policy_data(policy_data):
 # Function to fetch all policies
 def get_all_policies():
     query = "SELECT * FROM policies;"
+    with get_db_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(query)
+            rows = cursor.fetchall()
+            return rows
+
+def get_policy_by_name(policy_name: str):
+    query = sql.SQL("SELECT * FROM policies WHERE policy_name = %s;")
+    with get_db_connection() as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(query, (policy_name,))
+            rows = cursor.fetchall()
+            return rows
+        
+def get_all_Policy_name():
+    query = "Select policy_name from Policies;"
     with get_db_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute(query)

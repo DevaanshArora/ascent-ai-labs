@@ -10,6 +10,8 @@ import styles from './generate.module.css';
 import axios from "axios";
 import PolicyRenderer from './PolicyRenderer';
 
+
+
 interface OptionType {
   value: string;
   label: string;
@@ -69,6 +71,8 @@ const locations: OptionType[] = [
 
 const PolicyComponent = () => {
     const [policyText, setPolicyText] = useState('');
+    const [showPopup, setShowPopup] = useState(false);
+    const [policyName, setPolicyName] = useState('');
     const [formData, setFormData] = useState<{
       organisationName: string;
       additionalInfo: string;
@@ -106,6 +110,27 @@ const PolicyComponent = () => {
       return <p>Error displaying policy. Please check the format.</p>;
     }
   };
+
+  const handleNextClick = () => 
+    { setShowPopup(true); };
+
+
+  const handleSaveClick = async () => { 
+    try { const response = await fetch('http://127.0.0.1:8000/generate-policy/', {
+    method: 'POST', 
+    headers: {
+       'Content-Type': 'application/json', }, 
+       body: JSON.stringify({ policyName }), });
+        if (response.ok) { 
+          const data = await response.json();
+           console.log('Policy generated successfully:', data); 
+           //Handle the response data here 
+           setShowPopup(false); } 
+           else 
+           { console.error('Failed to generate policy:', response.statusText);
+
+            } } catch (error) {
+               console.error('Error generating policy:', error); } };
   
 
   const handleClose = () => {
@@ -158,6 +183,8 @@ const PolicyComponent = () => {
         console.error('Error generating policy:', error);
     
   }
+
+  
 
   
 };
@@ -216,8 +243,21 @@ const PolicyComponent = () => {
         </div>
 
         <div className="footer">
-          <button className="btn next-btn">Next</button>
+          <button className="btn next-btn" onClick={handleNextClick}>Next</button>
         </div>
+        {showPopup && (
+          <div className="popup">
+            <label>
+            Policy Name:
+            <input
+              type="text"
+              value={policyName}
+              onChange={(e) => setPolicyName(e.target.value)}
+              />
+            </label>
+              <button className="btn save-btn" onClick={handleSaveClick}>Save</button>
+          </div>
+        )}
       </div>
 
       <div className={styles.body}>

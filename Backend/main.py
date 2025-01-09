@@ -2,7 +2,7 @@
 
 from fastapi import FastAPI, HTTPException, Response
 from pydantic import BaseModel
-from db import insert_policy_data, get_all_policies
+from db import insert_policy_data, get_all_policies,get_policy_by_name,get_all_Policy_name
 from openai_helper import generate_policy
 from fastapi.middleware.cors import CORSMiddleware
 import json
@@ -26,7 +26,9 @@ class PolicyRequest(BaseModel):
     policyType: str 
     complianceStandard: str 
     location: str 
-
+class PolicySearchRequest(BaseModel):
+    policy_name: str 
+    
 class PolicyResponse(BaseModel):
     policy_text: str
     # id: int
@@ -66,13 +68,43 @@ async def generate_and_store_policy(request: PolicyRequest):
 
     # return PolicyResponse(policy_text=policy, id=policy_id)
 
+@app.post("/store-policy/")
+async def store_policy_in_db(policy_data: str, policy_name: str) -> dict:
+    """
+    Store the policy in the database.
+    Args:
+        policy_data: The policy text to be stored.
+        policy_name: The name of the policy.
+    Returns:
+        A dictionary with the policy ID or error details.
+    """
+    try:
+        # Assuming async database interaction
+        policy_id = await insert_policy_data(policy_data, policy_name)
+        return {"policy_id": policy_id, "message": "Policy stored successfully."}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.get("/policies/")
 async def get_policies():
     policies = get_all_policies()
+
+    return policies
+@app.get("/policies/name/")
+async def get_policies_name():
+    policies = get_all_Policy_name()
+    print(policies)
+
     return policies
 
+@app.post("/policies/search/")
+async def search_policies(request: PolicySearchRequest):
+    policy_name = request.policy_name
+    policies = get_policy_by_name(policy_name)
+    if not policies:
+        raise HTTPException(status_code=404, detail="Policy not found")
+    return policies
 
 
 # # app/main.py

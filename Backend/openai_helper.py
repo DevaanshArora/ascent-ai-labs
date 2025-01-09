@@ -1,8 +1,6 @@
-# app/openai_helper.py
-
 import openai
 
-def generate_policy(input_text, model="gpt-3.5-turbo", api_key="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"):
+def generate_policy(input_text, model="gpt-3.5-turbo", api_key="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"):
     """
     Connects to OpenAI's API to generate a policy based on the given input text.
     """
