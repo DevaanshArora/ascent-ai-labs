@@ -116,7 +116,11 @@ const PolicyComponent = () => {
     { setShowPopup(true); };
 
 
+<<<<<<< HEAD
   const handleClickOutside = (event: { target: any; }) => { 
+=======
+  const handleClickOutside = (event) => { 
+>>>>>>> 1169cf507ac6d7c4fffb145dc0d2a3cf1fb7e81b
     if (popupRef.current && !popupRef.current.contains(event.target)) { 
       setShowPopup(false);
      } };
